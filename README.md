@@ -1,0 +1,3 @@
+Just an excuse to try out Clojurescript nad instaparser. I was going to try to
+make some tooling for Elm based on the parse tree, but Clojure(script) isn't for
+me...
