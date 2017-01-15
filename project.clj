@@ -3,12 +3,18 @@
   :url "http://example.com/FIXME"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.293"]
-                 [enlive "1.1.6"]
                  [org.clojure/core.match "0.3.0-alpha4"]
-                 [com.cognitect/transit-cljs "0.8.239"]
-                 [instaparse "1.4.5"]]
+                 [com.rpl/specter "0.13.2"]
+                 [instaparse "1.4.5"]
+
+                 ; For repl use
+                 [com.cemerick/piggieback "0.2.1"]
+                 [org.clojure/tools.nrepl "0.2.10"]
+                 ]
+  :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
   :jvm-opts ^:replace ["-Xmx1g" "-server"]
   :plugins [[lein-npm "0.6.1"]
+            [lein-cljsbuild "1.0.0-alpha2"]
             [lein-cljfmt "0.5.6"]]
   :npm {:dependencies [[source-map-support "0.4.0"]]}
   :source-paths ["src" "target/classes"]

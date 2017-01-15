@@ -12,3 +12,8 @@ pom.xml
 .cljs_node_repl/
 index.html
 index_release.html
+.cljs_rhino_repl/
+.nrepl-history
+.nrepl-port
+scripts/figwheel_server.cljs
+

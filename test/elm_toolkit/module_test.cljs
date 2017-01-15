@@ -1,4 +1,4 @@
-(ns elm-toolkit.import_test
+(ns elm-toolkit.module_test
   (:require [elm-toolkit.parser :as parser]
             [cljs.test :refer-macros  [deftest is testing run-tests]]))
 
