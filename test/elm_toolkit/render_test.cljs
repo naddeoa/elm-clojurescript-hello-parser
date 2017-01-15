@@ -9,7 +9,7 @@
         render (r/render-import parse-tree)]
     (is (= input render))))
 
-(deftest test-render-import
+(deftest test-render-import-exposing
   (let [input "import Native.Array exposing (someFn, Fish)"
         parse-tree (parser/parser input :start :import)
         render (r/render-import parse-tree)]
@@ -26,5 +26,32 @@
         parse-tree (parser/parser input :start :import)
         render (r/render-import parse-tree)]
     (is (= input render))))
+
+
+
+(deftest test-render-module-simple
+  (let [input "module Fish"
+        parse-tree (parser/parser input :start :module_def)
+        render (r/render-import parse-tree)]
+    (is (= input render))))
+
+(deftest test-render-module-namespace
+  (let [input "module My.Project.Fish"
+        parse-tree (parser/parser input :start :module_def)
+        render (r/render-import parse-tree)]
+    (is (= input render))))
+
+(deftest test-render-module-exposing-all
+  (let [input "module My.Project.Fish exposing (..)"
+        parse-tree (parser/parser input :start :module_def)
+        render (r/render-import parse-tree)]
+    (is (= input render))))
+
+(deftest test-render-module-exposing-stuff
+  (let [input "module My.Project.Fish exposing (func, Type, otherFunc, OtherType)"
+        parse-tree (parser/parser input :start :module_def)
+        render (r/render-import parse-tree)]
+    (is (= input render))))
+
 
 (cljs.test/run-tests)

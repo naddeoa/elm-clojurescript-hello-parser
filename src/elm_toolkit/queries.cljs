@@ -10,3 +10,6 @@
 
 (defn imports [parse-tree]
   (find (partial keyword? :import) parse-tree))
+
+(defn module-def [parse-tree]
+  (find (partial keyword? :module_def) parse-tree))
