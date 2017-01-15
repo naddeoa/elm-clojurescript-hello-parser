@@ -33,4 +33,20 @@
         new-tree (q/swap-module-def module-def parse-tree)]
     (is (= new-tree parse-tree))))
 
+(deftest test-functions-query
+  (let [functions (q/functions parse-tree)
+        expected [[:function
+                   [:name "myFunction"]
+                   [:function_parameters [:name "m"]]
+                   [:expression [:value [:name "m"]]]]
+                  [:function
+                   [:name "otherFunction"]
+                   [:function_parameters [:name "a"] [:name "b"]]
+                   [:expression
+                    [:infix
+                     [:expression [:value [:name "a"]]]
+                     [:symbol "+"]
+                     [:expression [:value [:name "b"]]]]]]] ]
+    (is (= functions expected))))
+
 (cljs.test/run-tests)
