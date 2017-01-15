@@ -49,4 +49,47 @@
                      [:expression [:value [:name "b"]]]]]]] ]
     (is (= functions expected))))
 
+(deftest test-definitions-query
+  (let [definitions (q/definitions parse-tree)
+        expected [[:definition
+                   [:type [:Name "MyType"]
+                    [:options
+                     [:option [:Name "A"]]
+                     [:option [:Name "B"]]]]]
+                  [:definition
+                   [:type [:Name "Fish"]
+                    [:options
+                     [:option [:Name "Sticks"]]
+                     [:option [:Name "SomethingElse"]]]]]
+                  [:definition
+                   [:function_annotation [:name "myFunction"]
+                    [:signature
+                     [:signature_part [:Name "MyType"]]
+                     [:signature_part [:Name "MyType"]]]]]
+                  [:definition
+                   [:function [:name "myFunction"]
+                    [:function_parameters [:name "m"]]
+                    [:expression [:value [:name "m"]]]]]
+                  [:definition
+                   [:function_annotation [:name "otherFunction"]
+                    [:signature
+                     [:signature_part [:Name "Int"]]
+                     [:signature_part [:Name "Int"]]
+                     [:signature_part [:Name "Int"]]]]]
+                  [:definition
+                   [:function [:name "otherFunction"]
+                    [:function_parameters [:name "a"] [:name "b"]]
+                    [:expression
+                     [:infix
+                      [:expression [:value [:name "a"]]]
+                      [:symbol "+"]
+                      [:expression [:value [:name "b"]]]]]]]] ]
+    (is (= definitions expected))))
+
+(deftest test-definition-name
+  (let [definitions (q/definitions parse-tree)
+        actual (map #(q/definition-name %) definitions)
+        expected ["MyType" "Fish" "myFunction" "myFunction" "otherFunction" "otherFunction"] ]
+    (is (= actual expected))))
+
 (cljs.test/run-tests)

@@ -4,7 +4,6 @@ import List
 import String
 import Array
 
-
 type MyType
     = A
     | B

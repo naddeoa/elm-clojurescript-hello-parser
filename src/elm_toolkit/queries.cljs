@@ -1,5 +1,6 @@
 (ns elm-toolkit.queries
   (:require [com.rpl.specter :as specter]
+            [cljs.core.match :refer-macros [match]]
             [instaparse.core :as insta]
             ))
 
@@ -22,6 +23,18 @@
 
 (defn functions [parse-tree]
   (find (partial keyword? :function) parse-tree))
+
+(defn definitions [parse-tree]
+  (find (partial keyword? :definition) parse-tree))
+
+(defn definition-name [definition]
+  (match [definition]
+         [[:definition [:function [:name name] & rest] ] ] name
+         [[:definition [:function_annotation [:name name] & rest] ] ] name
+         [[:definition [:type [:Name name] & rest] ] ] name
+         :else nil
+         ))
+
 
 ;;
 ;; Transforms

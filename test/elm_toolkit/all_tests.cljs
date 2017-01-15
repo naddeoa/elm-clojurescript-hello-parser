@@ -1,4 +1,4 @@
-(ns elm-toolkit.core
+(ns elm-toolkit.all-tests
   (:require [elm-toolkit.if_test]
             [elm-toolkit.import_test]
             [elm-toolkit.module_test]
@@ -7,3 +7,4 @@
             [elm-toolkit.queries_test]
             [elm-toolkit.function_annotation_test]))
 
+(cljs.test/run-all-tests)
