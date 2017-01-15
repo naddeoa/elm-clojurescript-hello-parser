@@ -26,9 +26,12 @@
 (def import-transform (merge name-transform
                              namespace-transform
                              expose-transform
-                             module-transform
                              {:import (fn [& import] (str "import " (string/join import)))}))
+
+
 
 (defn render-import [import-vector]
   (insta/transform import-transform import-vector))
 
+(defn render-module[module-vector]
+  (insta/transform module-transform module-vector))

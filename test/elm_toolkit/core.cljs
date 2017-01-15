@@ -4,5 +4,6 @@
             [elm-toolkit.module_test]
             [elm-toolkit.value_test]
             [elm-toolkit.render_test]
+            [elm-toolkit.queries_test]
             [elm-toolkit.function_annotation_test]))
 
