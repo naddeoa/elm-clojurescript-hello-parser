@@ -35,7 +35,10 @@
              import (<break> import)*
 
     import =
-             <'import'> <break> namespace? module_name <break> exposing? <nl>?
+             <'import'> <break> namespace? module_name (<break> import_as)? <break> exposing? <nl>?
+
+    import_as =
+             <'as'> <break> Name
 
     expose_list =
              expose_all | (type_name | fn_name) (<break> <','> <break> (type_name | fn_name))*

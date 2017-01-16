@@ -9,6 +9,12 @@
                 [:module_name  [:Name "Array"]]]]
     (is (= expected actual))))
 
+(deftest test-import-as
+  (let [input "import Array as A"
+        expected (parser/parser input :start :import)
+        actual [:import [:module_name [:Name "Array"]] [:import_as [:Name "A"]]]]
+    (is (= expected actual))))
+
 (deftest test-import-namespace
   (let [input "import Something.Else.Array"
         expected (parser/parser input :start :import)
