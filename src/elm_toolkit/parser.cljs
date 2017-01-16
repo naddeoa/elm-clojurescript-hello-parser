@@ -57,10 +57,15 @@
              |
              (doc <ws>)? function
              |
-             (doc <ws>)? function_annotation
+             (doc <ws>)? annotation
+             |
+             (doc <ws>)? value_definition
+
+    value_definition =
+             name <break> <'='> <break> expression <nl>?
 
     type =
-             <'type'> <break> Name <break> type_parameters* <break> <'='> <break> options <nl>
+             <'type'> <break> Name <break> type_parameters* <break> <'='> <break> options <nl>?
 
     options =
              option (<break> <'|'> <break> option)*
@@ -76,7 +81,7 @@
 
 (* Rules for function annotations *)
 
-    function_annotation =
+    annotation =
              name <break> <':'> <break> signature <nl>?
 
     signature =
@@ -162,7 +167,7 @@
              |
              function
              |
-             function_annotation
+             annotation
 
     tuple =
              <'('> <break> (value | ignore_arg) <break> (<break> <','> <break> (value | ignore_arg))* <break> <')'>

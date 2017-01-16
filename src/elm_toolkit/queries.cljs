@@ -34,7 +34,7 @@
 (defn definition-name [definition]
   (match [definition]
          [[:definition [:function [:name name] & rest] ] ] name
-         [[:definition [:function_annotation [:name name] & rest] ] ] name
+         [[:definition [:annotation [:name name] & rest] ] ] name
          [[:definition [:type [:Name name] & rest] ] ] name
          :else nil
          ))

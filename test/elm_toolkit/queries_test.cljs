@@ -61,7 +61,7 @@
                      [:option [:Name "Sticks"]]
                      [:option [:Name "SomethingElse"]]]]]
                   [:definition
-                   [:function_annotation [:name "myFunction"]
+                   [:annotation [:name "myFunction"]
                     [:signature
                      [:signature_part [:Name "MyType"]]
                      [:signature_part [:Name "MyType"]]]]]
@@ -70,7 +70,7 @@
                     [:function_parameters [:name "m"]]
                     [:expression [:value [:name "m"]]]]]
                   [:definition
-                   [:function_annotation [:name "otherFunction"]
+                   [:annotation [:name "otherFunction"]
                     [:signature
                      [:signature_part [:Name "Int"]]
                      [:signature_part [:Name "Int"]]

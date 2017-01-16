@@ -7,6 +7,6 @@
             [elm-toolkit.queries_test]
             [elm-toolkit.lambda_test]
             [elm-toolkit.let_test]
-            [elm-toolkit.function_annotation_test]))
+            [elm-toolkit.annotation_test]))
 
 (cljs.test/run-all-tests)
