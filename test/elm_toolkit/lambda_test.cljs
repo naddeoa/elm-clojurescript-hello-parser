@@ -7,12 +7,14 @@
         actual (parser/parser input :start :lambda)
         expected [:lambda
                   [:destructure
-                   [:tuple [:value [:name "a"]] [:value [:name "b"]]]]
+                   [:tuple_destructure
+                    [:destructure
+                     [:variable_destructure [:name "a"]]]
+                    [:destructure
+                     [:variable_destructure [:name "b"]]]]]
                   [:expression
                    [:infix
-                    [:expression [:value [:name "a"]]]
-                    [:symbol "+"]
-                    [:expression [:value [:name "b"]]]]]]]
+                    [:expression [:value [:name "a"]]] [:symbol "+"] [:expression [:value [:name "b"]]]]]]]
     (is (= expected actual))))
 
 (deftest test-lambda-ignored-arg

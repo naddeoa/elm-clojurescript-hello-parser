@@ -86,13 +86,14 @@
              (namespace? Name | name) <break> (type_parameters*)
              |
              <'('> <break> signature <break> <')'>
-             | tuple
+             |
+             tuple
 
 
 (* Rules for function definitions *)
 
     function =
-             name <break> function_parameters* <break> <'='> <break> expression <nl>?
+             name <break> function_parameters <break> <'='> <break> expression <nl>?
 
     function_parameters =
              name (<break> name)*
@@ -157,16 +158,11 @@
              expression
 
     assignment =
-             lvalue <break> <'='> <break> expression <nl>
+             destructure <break> <'='> <break> expression <nl>
              |
              function
              |
              function_annotation
-
-    lvalue =
-             name
-             |
-             tuple
 
     tuple =
              <'('> <break> (value | ignore_arg) <break> (<break> <','> <break> (value | ignore_arg))* <break> <')'>
@@ -178,15 +174,26 @@
              destructure <break> <'->'> <break> expression <nl>
 
     destructure =
-             Name (<break> name)*
+             type_destructure
              |
-             name
+             variable_destructure
              |
-             tuple
+             tuple_destructure
              |
              symbol
              |
              ignore_arg
+             |
+             <'('> <break> destructure <break> <')'>
+
+    type_destructure =
+             Name (<break> name)+
+
+    variable_destructure =
+             name
+
+    tuple_destructure =
+             <'('> <break> destructure <break> (<break> <','> <break> destructure)+ <break> <')'>
 
     lambda =
              <'('> <'\\\\'> <break> destructure <break> <'->'> <break> expression <break> <')'>
