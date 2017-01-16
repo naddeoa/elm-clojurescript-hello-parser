@@ -70,6 +70,8 @@
 
     type_parameters =
              name (<break> name)*
+             |
+             namespace? Name
 
 
 (* Rules for function annotations *)
@@ -81,7 +83,7 @@
              signature_part (<break> <'->'> <break> signature_part)*
 
     signature_part =
-             (Name | name) <break> (type_parameters*)
+             (namespace? Name | name) <break> (type_parameters*)
              |
              <'('> <break> signature <break> <')'>
              | tuple
@@ -110,6 +112,8 @@
              let
              |
              case
+             |
+             lambda
              |
              <'('> expression <')'>
 
@@ -165,7 +169,7 @@
              tuple
 
     tuple =
-             <'('> <break> value <break> (<break> <','> <break> value)* <break> <')'>
+             <'('> <break> (value | ignore_arg) <break> (<break> <','> <break> (value | ignore_arg))* <break> <')'>
 
     case =
              <'case'> <break> expression <break> <'of'> <break> match (<break> match)*
@@ -177,7 +181,15 @@
              Name (<break> name)*
              |
              name
+             |
+             tuple
+             |
+             symbol
+             |
+             ignore_arg
 
+    lambda =
+             <'('> <'\\\\'> <break> destructure <break> <'->'> <break> expression <break> <')'>
 
 (* Rules for comments *)
 
@@ -215,6 +227,8 @@
     float =
              #'-?[0-9]+\\.[0-9]*'
 
+    ignore_arg =
+             <'_'>
     symbol =
              !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[+-/*=.<>:&|^?%#~!]+'
 
