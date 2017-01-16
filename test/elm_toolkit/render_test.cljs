@@ -60,5 +60,11 @@
         render (r/render-module parse-tree)]
     (is (= input render))))
 
+(deftest test-render-module-exposing-stuff
+  (let [input "A.B."
+        parse-tree (parser/parser input :start :namespace)
+        render (r/render-namespace parse-tree)]
+    (println parse-tree)
+    (is (= input render))))
 
 (cljs.test/run-tests)

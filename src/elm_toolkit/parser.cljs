@@ -26,6 +26,8 @@
     module_name =
              Name
 
+    identifier =
+             namespace? (Name | name)
 
 (* Rules for import statements *)
 
@@ -88,7 +90,7 @@
 (* Rules for function definitions *)
 
     function =
-             name <break> function_parameters* <break> <'='> <break> expression <nl>
+             name <break> function_parameters* <break> <'='> <break> expression <nl>?
 
     function_parameters =
              name (<break> name)*

@@ -1,8 +1,7 @@
 (ns elm-toolkit.render
   (:require [cljs.core.match :refer-macros [match]]
             [clojure.string :as string]
-            [instaparse.core :as insta]
-            [elm-toolkit.queries :as q]))
+            [instaparse.core :as insta]))
 
 (def name-transform {:Name      (fn [name] name)
                      :name      (fn [name] name)
@@ -28,10 +27,14 @@
                              expose-transform
                              {:import (fn [& import] (str "import " (string/join import)))}))
 
+(def namespace-transform (merge name-transform {:namespace (fn [& names] (str (string/join "." names) ".") ) }))
 
 
 (defn render-import [import-vector]
   (insta/transform import-transform import-vector))
 
-(defn render-module[module-vector]
+(defn render-module [module-vector]
   (insta/transform module-transform module-vector))
+
+(defn render-namespace [namespace]
+  (insta/transform namespace-transform namespace))

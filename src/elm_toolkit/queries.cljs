@@ -2,6 +2,7 @@
   (:require [com.rpl.specter :as specter]
             [cljs.core.match :refer-macros [match]]
             [instaparse.core :as insta]
+            [elm-toolkit.render :as render]
             ))
 
 
@@ -27,6 +28,9 @@
 (defn definitions [parse-tree]
   (find (partial keyword? :definition) parse-tree))
 
+(defn namespace [parse-tree]
+  (find (partial keyword? :namespace) parse-tree))
+
 (defn definition-name [definition]
   (match [definition]
          [[:definition [:function [:name name] & rest] ] ] name
@@ -35,6 +39,8 @@
          :else nil
          ))
 
+(defn references? [name definition]
+  (= name (definition-name definition)))
 
 ;;
 ;; Transforms

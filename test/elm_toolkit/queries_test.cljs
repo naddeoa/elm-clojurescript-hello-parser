@@ -6,7 +6,6 @@
 
 (def parse-tree (parser/parse-file "./input/Simple/Module.elm"))
 
-
 (deftest test-imports-query
   (let [imports (q/imports parse-tree)
         expected [[:import [:module_name [:Name "List"]]]
@@ -91,5 +90,11 @@
         actual (map #(q/definition-name %) definitions)
         expected ["MyType" "Fish" "myFunction" "myFunction" "otherFunction" "otherFunction"] ]
     (is (= actual expected))))
+
+(deftest test-references?-no-namespace
+  (let [definition (parser/parser "myFunction a = List.empty" :start :definition)
+        name "myFunction"
+        refers (q/references? name definition)]
+    (is refers)))
 
 (cljs.test/run-tests)
