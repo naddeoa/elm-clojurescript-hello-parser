@@ -32,6 +32,8 @@
         new-tree (q/swap-module-def module-def parse-tree)]
     (is (= new-tree parse-tree))))
 
+(println "=================")
+(println parse-tree)
 (deftest test-functions-query
   (let [functions (q/functions parse-tree)
         expected [[:function

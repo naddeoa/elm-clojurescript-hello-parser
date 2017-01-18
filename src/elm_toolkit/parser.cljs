@@ -6,7 +6,7 @@
 
 (def grammar "
     start =
-             <ws> module_def <ws> (doc <ws>)? imports <ws> definitions <ws>
+             <ws> module_def <ws> (doc <ws>)? imports? <ws> definitions <ws>
 
 
 (* Rules for the initial module definition *)
@@ -38,7 +38,7 @@
              <'import'> <break> namespace? module_name (<break> import_as)? <break> exposing? <nl>?
 
     import_as =
-             <'as'> <break> Name
+             <'as'> Name
 
     expose_list =
              expose_all | (type_name | fn_name) (<break> <','> <break> (type_name | fn_name))*
@@ -80,6 +80,8 @@
              name (<break> name)*
              |
              namespace? Name
+             |
+             <'('> type_parameters <')'>
 
 
 (* Rules for function annotations *)
@@ -188,20 +190,18 @@
              |
              tuple_destructure
              |
-             symbol
-             |
              ignore_arg
              |
              <'('> <break> destructure <break> <')'>
 
     type_destructure =
-             Name (<break> name)+
+             Name (<break> destructure)*
 
     variable_destructure =
              name
 
     tuple_destructure =
-             <'('> <break> destructure <break> (<break> <','> <break> destructure)+ <break> <')'>
+             <'('> <break> destructure (<break> <','> <break> destructure)+ <break> <')'>
 
     lambda =
              <'('> <'\\\\'> <break> destructure <break> <'->'> <break> expression <break> <')'>
@@ -268,5 +268,5 @@
 
 (defn parse-file [path]
   (let [content (.readFileSync fs path "UTF-8" )]
-    (parser content)))
+    (parser content :partial true :total true)))
 

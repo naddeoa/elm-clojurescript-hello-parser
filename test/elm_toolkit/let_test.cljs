@@ -45,7 +45,8 @@
         expected [:let
                   [:assignment
                    [:destructure
-                    [:type_destructure [:Name "Msg"] [:name "string"]]]
+                    [:type_destructure [:Name "Msg"]
+                     [:destructure [:variable_destructure [:name "string"]]]]]
                    [:expression
                     [:value [:name "msg"]]]]
                   [:in_expression
