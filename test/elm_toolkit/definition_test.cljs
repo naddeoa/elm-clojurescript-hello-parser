@@ -38,16 +38,4 @@
                     [:signature_part [:Name "Int"]]]]]]
     (is (= expected actual))))
 
-(deftest test-definition-type
-  (let [input "type Fish a = Salmon a | Cod"
-        actual (parser/parser input :start :definition)
-        expected [:definition
-                  [:type
-                   [:Name "Fish"]
-                   [:type_parameters [:name "a"]]
-                   [:options
-                    [:option [:Name "Salmon"] [:type_parameters [:name "a"]]]
-                    [:option [:Name "Cod"]]]]]]
-    (is (= expected actual))))
-
 (cljs.test/run-tests)

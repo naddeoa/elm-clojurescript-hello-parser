@@ -38,7 +38,7 @@
              <'import'> <break> namespace? module_name (<break> import_as)? <break> exposing? <nl>?
 
     import_as =
-             <'as'> Name
+             <'as'> <break> Name
 
     expose_list =
              expose_all | (type_name | fn_name) (<break> <','> <break> (type_name | fn_name))*
@@ -74,7 +74,7 @@
              option (<break> <'|'> <break> option)*
 
     option =
-             Name <break> type_parameters*
+             Name (<break> destructure)*
 
     type_parameters =
              name (<break> name)*
@@ -93,11 +93,9 @@
              signature_part (<break> <'->'> <break> signature_part)*
 
     signature_part =
-             (namespace? Name | name) <break> (type_parameters*)
+             destructure
              |
              <'('> <break> signature <break> <')'>
-             |
-             tuple
 
 
 (* Rules for function definitions *)
@@ -195,7 +193,7 @@
              <'('> <break> destructure <break> <')'>
 
     type_destructure =
-             Name (<break> destructure)*
+             namespace? Name (<break> destructure)*
 
     variable_destructure =
              name
