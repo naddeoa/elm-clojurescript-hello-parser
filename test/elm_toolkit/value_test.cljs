@@ -22,16 +22,6 @@
                 [:Name "Namespace"]]]
     (is (= expected actual))))
 
-(deftest test-value-tuple
-  (let [input "(1,2,3)"
-        expected (parser/parser input :start :value)
-        actual [:value
-                [:tuple
-                 [:value  [:int "1"]]
-                 [:value  [:int "2"]]
-                 [:value  [:int "3"]]]]]
-    (is (= expected actual))))
-
 (deftest test-value-int
   (let [input "22"
         expected (parser/parser input :start :value)

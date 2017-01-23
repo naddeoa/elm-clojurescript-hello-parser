@@ -5,6 +5,8 @@
             [elm-toolkit.value_test]
             [elm-toolkit.render_test]
             [elm-toolkit.lambda_test]
+            [elm-toolkit.tuple_test]
+            [elm-toolkit.comment_test]
             [pjstadig.humane-test-output]
             [elm-toolkit.let_test]
             [elm-toolkit.type_test]

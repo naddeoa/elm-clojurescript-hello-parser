@@ -168,7 +168,7 @@
              annotation
 
     tuple =
-             <'('> <break> (value | ignore_arg) <break> (<break> <','> <break> (value | ignore_arg))* <break> <')'>
+             <'('> <break> expression <break> (<break> <','> <break> expression)* <break> <')'>
 
     case =
              <'case'> <break> expression <break> <'of'> <break> match (<break> match)*
@@ -273,7 +273,7 @@
 (def parser (insta/parser grammar))
 
 (defn parses [input]
-  (insta/parses parser input :start :annotation))
+  (insta/parses parser input))
 
 (defn debug [path]
   (let [content (.readFileSync fs path "UTF-8" )]
@@ -281,5 +281,5 @@
 
 (defn parse-file [path]
   (let [content (.readFileSync fs path "UTF-8" )]
-    (parser content :total true)))
+    (parser content )))
 
