@@ -187,6 +187,8 @@
              |
              variable_destructure
              |
+             singleline_comment
+             |
              <'('> <break> destructure <break> <')'>
 
     function_destructure =
@@ -226,7 +228,7 @@
              <'@docs'> <break> (Name | name) <break> ( <break> <','> <break> (Name | name) )*
 
     text =
-             !('@docs'|'#') #'.*' <nl>?
+             !('@docs'|'#'|'-}') #'.*' <nl>?
 
 
 (* Building blocks *)
@@ -248,11 +250,14 @@
     symbol =
              !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[+-/*=.<>:&|^?%#~!]+'
 
+    comment =
+             singleline_comment | multiline_comment
+
     multiline_comment =
-             <break> #'\\{-.*-\\}' <break>
+             <'{-'> (#'[^}-]*' <nl>?)* <'-}'>
 
     singleline_comment =
-             <break> <'--'> #'.*' <'\\n'>
+             <break> <'--'> #'.*'
 
     nl =
              #'\\n'
