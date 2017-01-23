@@ -45,12 +45,12 @@
         expected [:let
                   [:assignment
                    [:destructure
-                    [:type_destructure [:Name "Msg"]
-                     [:destructure [:variable_destructure [:name "string"]]]]]
-                   [:expression
-                    [:value [:name "msg"]]]]
-                  [:in_expression
-                   [:expression [:value [:name "string"]]]]]]
+                    [:type_destructure
+                     [:Name "Msg"]
+                     [:type_destructure_argument
+                      [:variable_destructure [:name "string"]]]]]
+                   [:expression [:value [:name "msg"]]]]
+                  [:in_expression [:expression [:value [:name "string"]]]]]]
     (is (= expected actual))))
 
 (cljs.test/run-tests)

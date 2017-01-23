@@ -6,6 +6,7 @@
                  [org.clojure/core.match "0.3.0-alpha4"]
                  [com.rpl/specter "0.13.2"]
                  [instaparse "1.4.5"]
+                 [pjstadig/humane-test-output "0.8.1"]
 
                  ; For repl use
                  [com.cemerick/piggieback "0.2.1"]

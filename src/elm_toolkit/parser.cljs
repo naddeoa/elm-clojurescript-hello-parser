@@ -68,21 +68,22 @@
              name <break> <'='> <break> expression <nl>?
 
     type =
-             <'type'> <break> Name <break> type_parameters* <break> <'='> <break> options <nl>?
+             <'type'> <break> Name <break> type_parameters? <break> <'='> <break> options <nl>?
 
     options =
              option (<break> <'|'> <break> option)*
 
     option =
-             Name (<break> destructure)*
+             Name (<break> option_parameter)*
+
+    option_parameter =
+             destructure
 
     type_parameters =
-             name (<break> name)*
-             |
-             namespace? Name
-             |
-             <'('> type_parameters <')'>
+             type_parameter+
 
+    type_parameter =
+             name
 
 (* Rules for function annotations *)
 
@@ -90,13 +91,7 @@
              name <break> <':'> <break> signature <nl>?
 
     signature =
-             signature_part (<break> <'->'> <break> signature_part)*
-
-    signature_part =
              destructure
-             |
-             <'('> <break> signature <break> <')'>
-
 
 (* Rules for function definitions *)
 
@@ -184,16 +179,24 @@
     destructure =
              type_destructure
              |
-             variable_destructure
+             function_destructure
              |
              tuple_destructure
              |
              ignore_arg
              |
+             variable_destructure
+             |
              <'('> <break> destructure <break> <')'>
 
+    function_destructure =
+             destructure (<break> <'->'> <break> destructure)+
+
     type_destructure =
-             namespace? Name (<break> destructure)*
+             namespace? Name (<break> type_destructure_argument)*
+
+    type_destructure_argument =
+             variable_destructure / tuple_destructure / destructure
 
     variable_destructure =
              name
@@ -207,7 +210,7 @@
 (* Rules for comments *)
 
     doc =
-             <'{-|'> <ws> doc_part* <ws> <'-}'>
+             <'{-|'> <ws> doc_part* <ws> '-}'
 
     doc_part =
              doc_header
@@ -220,10 +223,10 @@
              <'#'> #'.*'
 
     doc_list =
-             <'@docs'> <break> (Name | name) <break> ( <break> ',' <break> (Name | name) )*
+             <'@docs'> <break> (Name | name) <break> ( <break> <','> <break> (Name | name) )*
 
     text =
-             !('@docs'|'#') #'.*' <nl>
+             !('@docs'|'#') #'.*' <nl>?
 
 
 (* Building blocks *)
@@ -264,7 +267,14 @@
 
 (def parser (insta/parser grammar))
 
+(defn parses [input]
+  (insta/parses parser input :start :annotation))
+
+(defn debug [path]
+  (let [content (.readFileSync fs path "UTF-8" )]
+    (insta/parses parser content)))
+
 (defn parse-file [path]
   (let [content (.readFileSync fs path "UTF-8" )]
-    (parser content :partial true :total true)))
+    (parser content :total true)))
 
