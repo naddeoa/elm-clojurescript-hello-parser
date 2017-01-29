@@ -189,7 +189,15 @@
              |
              singleline_comment
              |
+             list_destructure
+             |
              <'('> <break> destructure <break> <')'>
+
+    list_destructure =
+             <'['> <break> list_destructure_items? <break> <']'>
+
+    list_destructure_items =
+             destructure (<break> <','> <break> destructure)*
 
     function_destructure =
              destructure (<break> <'->'> <break> destructure)+

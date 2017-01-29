@@ -8,9 +8,12 @@
         expected [:destructure
                   [:type_destructure
                    [:Name "Type"]
-                   [:destructure [:variable_destructure [:name "a"]]]
-                   [:destructure [:variable_destructure [:name "b"]]]
-                   [:destructure [:variable_destructure [:name "c"]]]]]]
+                   [:type_destructure_argument
+                    [:variable_destructure [:name "a"]]]
+                   [:type_destructure_argument
+                    [:variable_destructure [:name "b"]]]
+                   [:type_destructure_argument
+                    [:variable_destructure [:name "c"]]]]]]
     (is (= expected actual))))
 
 (deftest test-destructure-tuple
@@ -48,33 +51,45 @@
   (let [input "Type a (List b)"
         actual (parser/parser input :start :destructure )
         expected [:destructure
-                  [:type_destructure [:Name "Type"]
-                   [:destructure [:variable_destructure [:name "a"]]]
-                   [:destructure
+                  [:type_destructure
+                   [:Name "Type"]
+                   [:type_destructure_argument
+                    [:variable_destructure [:name "a"]]]
+                   [:type_destructure_argument
                     [:destructure
-                     [:type_destructure [:Name "List"]
-                      [:destructure [:variable_destructure [:name "b"]]]]]]]]]
+                     [:destructure
+                      [:type_destructure
+                       [:Name "List"]
+                       [:type_destructure_argument
+                        [:variable_destructure [:name "b"]]]]]]]]]]
     (is (= expected actual))))
 
 (deftest test-destructure-type-tuple
   (let [input "Type (a,b) (List (List (a,b)))"
         actual (parser/parser input :start :destructure )
         expected [:destructure
-                  [:type_destructure [:Name "Type"]
-                   [:destructure
+                  [:type_destructure
+                   [:Name "Type"]
+                   [:type_destructure_argument
                     [:tuple_destructure
                      [:destructure [:variable_destructure [:name "a"]]]
                      [:destructure [:variable_destructure [:name "b"]]]]]
-                   [:destructure
+                   [:type_destructure_argument
                     [:destructure
-                     [:type_destructure [:Name "List"]
-                      [:destructure
-                       [:destructure
-                        [:type_destructure [:Name "List"]
+                     [:destructure
+                      [:type_destructure
+                       [:Name "List"]
+                       [:type_destructure_argument
+                        [:destructure
                          [:destructure
-                          [:tuple_destructure
-                           [:destructure [:variable_destructure [:name "a"]]]
-                           [:destructure [:variable_destructure [:name "b"]]]]]]]]]]]]]]
+                          [:type_destructure
+                           [:Name "List"]
+                           [:type_destructure_argument
+                            [:tuple_destructure
+                             [:destructure
+                              [:variable_destructure [:name "a"]]]
+                             [:destructure
+                              [:variable_destructure [:name "b"]]]]]]]]]]]]]]] ]
     (is (= expected actual))))
 
 (deftest test-destructure-ignored-args
@@ -84,6 +99,46 @@
                    [:tuple_destructure
                     [:destructure [:ignore_arg]]
                     [:destructure [:variable_destructure [:name "a"]]]]]]
+    (is (= expected actual))))
+
+
+(deftest test-destructure-list-empty
+  (let [input "[]"
+        actual (parser/parser input :start :destructure)
+        expected [:destructure [:list_destructure]]]
+    (is (= expected actual))))
+
+(deftest test-destructure-list-singleton
+  (let [input "[ a ]"
+        actual (parser/parser input :start :destructure)
+        expected [:destructure
+                  [:list_destructure
+                   [:list_destructure_items
+                    [:destructure [:variable_destructure [:name "a"]]]]]]]
+    (is (= expected actual))))
+
+(deftest test-destructure-list-nested
+  (let [input "[[a]]"
+        actual (parser/parser input :start :destructure)
+        expected [:destructure
+                  [:list_destructure
+                   [:list_destructure_items
+                    [:destructure
+                     [:list_destructure
+                      [:list_destructure_items
+                       [:destructure
+                        [:variable_destructure [:name "a"]]]]]]]]]]
+    (is (= expected actual))))
+
+(deftest test-destructure-list-multiple
+  (let [input "[a, b, c]"
+        actual (parser/parser input :start :destructure)
+        expected [:destructure
+                  [:list_destructure
+                   [:list_destructure_items
+                    [:destructure [:variable_destructure [:name "a"]]]
+                    [:destructure [:variable_destructure [:name "b"]]]
+                    [:destructure [:variable_destructure [:name "c"]]]]]]]
     (is (= expected actual))))
 
 (cljs.test/run-tests)
