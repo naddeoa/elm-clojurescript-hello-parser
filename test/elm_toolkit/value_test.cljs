@@ -82,4 +82,22 @@
                    [:name "constant"]]]]] ]
     (is (= expected actual))))
 
+(deftest test-value-list-nested
+  (let [input "[[1, 2], [3, 4]]"
+        expected (parser/parser input :start :value)
+        actual [:value
+                [:list
+                 [:list_items
+                  [:value
+                   [:list
+                    [:list_items
+                     [:value [:int "1"]]
+                     [:value [:int "2"]]]]]
+                  [:value
+                   [:list
+                    [:list_items
+                     [:value [:int "3"]]
+                     [:value [:int "4"]]]]]]]]]
+    (is (= expected actual))))
+
 (cljs.test/run-tests)

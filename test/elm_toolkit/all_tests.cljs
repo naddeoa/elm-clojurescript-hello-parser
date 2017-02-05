@@ -10,6 +10,8 @@
             [pjstadig.humane-test-output]
             [elm-toolkit.let_test]
             [elm-toolkit.type_test]
+            [elm-toolkit.case_test]
+            [elm-toolkit.string_test]
             [elm-toolkit.annotation_test]))
 
 (cljs.test/run-all-tests)

@@ -101,6 +101,15 @@
                     [:destructure [:variable_destructure [:name "a"]]]]]]
     (is (= expected actual))))
 
+(deftest test-destructure-ignored-args-with-vlaue
+  (let [input "(_, 2)"
+        actual (parser/parser input :start :destructure)
+        expected  [:destructure
+                   [:tuple_destructure
+                    [:destructure [:ignore_arg]]
+                    [:destructure
+                     [:value_destructure [:literal [:int "2"]]]]]] ]
+    (is (= expected actual))))
 
 (deftest test-destructure-list-empty
   (let [input "[]"

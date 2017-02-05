@@ -134,7 +134,7 @@
              expression
 
     function_call =
-             namespace? (Name | name) <break> arguments
+             namespace? (Name | name) <break> arguments <nl>?
 
     arguments =
              argument (<break> argument)*
@@ -179,10 +179,16 @@
              <'('> <break> expression <break> (<break> <','> <break> expression)* <break> <')'>
 
     case =
-             <'case'> <break> expression <break> <'of'> <break> match (<break> match)*
+             <'case'> <break> case_on <break> <'of'> <break> match (<break> match)* 
+
+    case_on =
+             expression
 
     match =
-             destructure <break> <'->'> <break> expression <nl>
+             destructure <break> (match_alias <break>)? <'->'> <break> expression <nl>?
+
+    match_alias =
+             <'as'> <break> name
 
     destructure =
              type_destructure
@@ -198,6 +204,8 @@
              singleline_comment
              |
              list_destructure
+             |
+             value_destructure
              |
              <'('> <break> destructure <break> <')'>
 
@@ -218,6 +226,9 @@
 
     variable_destructure =
              name
+
+    value_destructure =
+             literal
 
     tuple_destructure =
              <'('> <break> destructure (<break> <','> <break> destructure)+ <break> <')'>
@@ -260,6 +271,16 @@
 
     float =
              #'-?[0-9]+\\.[0-9]*'
+
+    string =
+             <'\"'>  #'[^\"]*'  <'\"'>
+
+    literal =
+             string
+             |
+             float
+             |
+             int
 
     ignore_arg =
              <'_'>
