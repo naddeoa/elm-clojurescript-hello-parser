@@ -150,6 +150,8 @@
              float
              |
              tuple
+             |
+             list
 
     infix =
              expression <break> symbol ( (<break> expression) | <break> infix )
@@ -166,6 +168,12 @@
              function
              |
              annotation
+
+    list =
+             <'['> <break> list_items? <break> <']'>
+
+    list_items =
+             value (<break> <','> <break> value)*
 
     tuple =
              <'('> <break> expression <break> (<break> <','> <break> expression)* <break> <')'>

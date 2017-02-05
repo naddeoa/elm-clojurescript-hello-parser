@@ -46,4 +46,40 @@
         actual [:value  [:float "-22.44"]]]
     (is (= expected actual))))
 
+(deftest test-value-list-empty
+  (let [input "[]"
+        expected (parser/parser input :start :value)
+        actual [:value [:list]] ]
+    (is (= expected actual))))
+
+(deftest test-value-list-values
+  (let [input "[1, 2, 3]"
+        expected (parser/parser input :start :value)
+        actual [:value
+                [:list
+                 [:list_items
+                  [:value [:int "1"]]
+                  [:value [:int "2"]] 
+                  [:value [:int "3"]]]]] ]
+    (is (= expected actual))))
+
+(deftest test-value-list-variables
+  (let [input "[a, b]"
+        expected (parser/parser input :start :value)
+        actual [:value
+                [:list
+                 [:list_items [:value [:name "a"]] [:value [:name "b"]]]]] ]
+    (is (= expected actual))))
+
+(deftest test-value-list-with-namespace
+  (let [input "[ Some.Module.constant ]"
+        expected (parser/parser input :start :value)
+        actual [:value
+                [:list
+                 [:list_items
+                  [:value
+                   [:namespace [:Name "Some"] [:Name "Module"]]
+                   [:name "constant"]]]]] ]
+    (is (= expected actual))))
+
 (cljs.test/run-tests)
