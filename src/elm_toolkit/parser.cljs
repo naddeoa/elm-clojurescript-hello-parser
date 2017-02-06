@@ -207,7 +207,15 @@
              |
              value_destructure
              |
+             record_destructure
+             |
              <'('> <break> destructure <break> <')'>
+
+    record_destructure =
+             <'{'> <break> record_destructure_items? <break> <'}'>
+
+    record_destructure_items =
+             annotation (<break> <','> <break> annotation)*
 
     list_destructure =
              <'['> <break> list_destructure_items? <break> <']'>

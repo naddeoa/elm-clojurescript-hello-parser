@@ -12,6 +12,7 @@
             [elm-toolkit.type_test]
             [elm-toolkit.case_test]
             [elm-toolkit.string_test]
+            [elm-toolkit.record_destructure_test]
             [elm-toolkit.annotation_test]))
 
 (cljs.test/run-all-tests)
