@@ -124,6 +124,8 @@
              |
              lambda
              |
+             record_update
+             |
              <'('> expression <')'>
 
     if =
@@ -161,6 +163,12 @@
              record
              |
              list
+
+    record_update =
+             <'{'> <break> record_update_target <break> <'|'> <break> record_items <break> <'}'>
+
+    record_update_target =
+             namespace? (Name|name)
 
     infix =
              expression <break> symbol ( (<break> expression) | <break> infix )
