@@ -149,7 +149,11 @@
              |
              float
              |
+             string
+             |
              tuple
+             |
+             record
              |
              list
 
@@ -178,8 +182,17 @@
     tuple =
              <'('> <break> expression <break> (<break> <','> <break> expression)* <break> <')'>
 
+    record =
+             <'{'> <break> record_items? <break> <'}'>
+
+    record_items =
+             record_item (<break> <','> <break> record_item)*
+
+    record_item =
+             name <break> <'='> <break> expression
+
     case =
-             <'case'> <break> case_on <break> <'of'> <break> match (<break> match)* 
+             <'case'> <break> case_on <break> <'of'> <break> match (<break> match)*
 
     case_on =
              expression
@@ -292,8 +305,11 @@
 
     ignore_arg =
              <'_'>
+
     symbol =
-             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[+-/*=.<>:&|^?%#~!]+'
+             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[+-/*.<>:&|^?%#~!]+'
+             |
+             #'=[+-/*.<>:&|=^?%#~!]+' (* hacky way of reserving = but allowing custom operators still *)
 
     comment =
              singleline_comment | multiline_comment
