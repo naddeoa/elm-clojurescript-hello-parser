@@ -58,6 +58,8 @@
     definition =
              (doc <ws>)? type
              |
+             (doc <ws>)? type_alias
+             |
              (doc <ws>)? function
              |
              (doc <ws>)? annotation
@@ -66,6 +68,9 @@
 
     value_definition =
              name <break> <'='> <break> expression <nl>?
+
+    type_alias =
+             <'type'> <break> <'alias'> <break> Name <break> type_parameters? <break> <'='> <break> destructure <nl>?
 
     type =
              <'type'> <break> Name <break> type_parameters? <break> <'='> <break> options <nl>?

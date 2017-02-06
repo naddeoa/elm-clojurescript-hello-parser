@@ -14,6 +14,7 @@
             [elm-toolkit.string_test]
             [elm-toolkit.record_destructure_test]
             [elm-toolkit.record_test]
+            [elm-toolkit.type_alias_test]
             [elm-toolkit.annotation_test]))
 
 (cljs.test/run-all-tests)
