@@ -6,8 +6,16 @@
 
 (def grammar "
     start =
-             <ws> module_def <ws> (doc <ws>)? imports? <ws> definitions <ws>
+             (<break>? block <break>?)+
 
+    block =
+             module_def
+             |
+             doc
+             |
+             imports
+             |
+             definition
 
 (* Rules for the initial module definition *)
 
@@ -52,19 +60,16 @@
 
 (* Rules for the the bulk of the elm file, defining things *)
 
-    definitions =
-             definition (<ws> definition)*
-
     definition =
-             (doc <ws>)? type
+             type
              |
-             (doc <ws>)? type_alias
+             type_alias
              |
-             (doc <ws>)? function
+             function
              |
-             (doc <ws>)? annotation
+             annotation
              |
-             (doc <ws>)? value_definition
+             value_definition
 
     value_definition =
              name <break> <'='> <break> expression <nl>?
@@ -93,10 +98,10 @@
 (* Rules for function annotations *)
 
     annotation =
-             name <break> <':'> <break> signature <nl>?
+             name <break> <':'> <break> signature
 
     signature =
-             destructure
+             function_destructure
 
 (* Rules for function definitions *)
 
@@ -104,7 +109,7 @@
              name <break> function_parameters <break> <'='> <break> expression <nl>?
 
     function_parameters =
-             name (<break> name)*
+             destructure (<break> destructure)*
 
 
 (* Rules for expressions *)
@@ -219,8 +224,6 @@
     destructure =
              type_destructure
              |
-             function_destructure
-             |
              tuple_destructure
              |
              ignore_arg
@@ -234,6 +237,8 @@
              value_destructure
              |
              record_destructure
+             |
+             <'('> <break> function_destructure <break>  <')'>
              |
              <'('> <break> destructure <break> <')'>
 
@@ -250,16 +255,19 @@
              destructure (<break> <','> <break> destructure)*
 
     function_destructure =
-             destructure (<break> <'->'> <break> destructure)+
+             function_destructure_argument (<break> <'->'> <break> function_destructure_argument)*
+
+    function_destructure_argument =
+             destructure
 
     type_destructure =
              namespace? Name (<break> type_destructure_argument)*
 
     type_destructure_argument =
-             variable_destructure / tuple_destructure / destructure
+             destructure
 
     variable_destructure =
-             name
+             namespace? name
 
     value_destructure =
              literal
@@ -301,10 +309,10 @@
              !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[a-z][a-zA-Z0-9]*'
 
     int =
-             #'-?[0-9]+'
+             !'->' #'-?[0-9]+'
 
     float =
-             #'-?[0-9]+\\.[0-9]*'
+             !'->' #'-?[0-9]+\\.[0-9]*'
 
     string =
              <'\"'>  #'[^\"]*'  <'\"'>
@@ -323,6 +331,8 @@
              !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[+-/*.<>:&|^?%#~!]+'
              |
              #'=[+-/*.<>:&|=^?%#~!]+' (* hacky way of reserving = but allowing custom operators still *)
+             |
+             #'[+-/*.<>:&|=^?%#~!]+='
 
     comment =
              singleline_comment | multiline_comment
