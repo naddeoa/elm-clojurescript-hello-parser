@@ -7,6 +7,7 @@
                  [com.rpl/specter "0.13.2"]
                  [instaparse "1.4.5"]
                  [pjstadig/humane-test-output "0.8.1"]
+                 [figwheel-sidecar "0.5.0-SNAPSHOT" :scope "test"]
 
                  ; For repl use
                  [com.cemerick/piggieback "0.2.1"]

@@ -6,8 +6,16 @@
 
 (def grammar "
     start =
-             <ws> module_def <ws> (doc <ws>)? imports? <ws> definitions <ws>
+             (<break>? block <break>?)+
 
+    block =
+             module_def
+             |
+             doc
+             |
+             import
+             |
+             definition
 
 (* Rules for the initial module definition *)
 
@@ -31,9 +39,6 @@
 
 (* Rules for import statements *)
 
-    imports =
-             import (<break> import)*
-
     import =
              <'import'> <break> namespace? module_name (<break> import_as)? <break> exposing? <nl>?
 
@@ -52,19 +57,16 @@
 
 (* Rules for the the bulk of the elm file, defining things *)
 
-    definitions =
-             definition (<ws> definition)*
-
     definition =
-             (doc <ws>)? type
+             type
              |
-             (doc <ws>)? type_alias
+             type_alias
              |
-             (doc <ws>)? function
+             function
              |
-             (doc <ws>)? annotation
+             annotation
              |
-             (doc <ws>)? value_definition
+             value_definition
 
     value_definition =
              name <break> <'='> <break> expression <nl>?
@@ -93,26 +95,31 @@
 (* Rules for function annotations *)
 
     annotation =
-             name <break> <':'> <break> signature <nl>?
+             name <break> <':'> <break> signature
 
     signature =
+             function_destructure
+             |
              destructure
 
 (* Rules for function definitions *)
 
     function =
-             name <break> function_parameters <break> <'='> <break> expression <nl>?
+             name <break> function_parameters <break> <'='> <break> function_body
+
+    function_body =
+             expression
+             |
+             function_call
 
     function_parameters =
-             name (<break> name)*
+             destructure (<break> destructure)*
 
 
 (* Rules for expressions *)
 
     expression =
              if
-             |
-             function_call
              |
              value
              |
@@ -126,28 +133,35 @@
              |
              record_update
              |
-             <'('> expression <')'>
+             <'('> <break> function_call <break> <')'>
+             |
+             <'('> <break> expression <break> <')'>
+
+    function_or_expression =
+             expression
+             |
+             function_call
 
     if =
              <'if'> <break> test <break> <'then'> <break> true_expression <break> <'else'> <break> else_expression (<break> if)*
 
     test =
-             expression
+             function_or_expression
 
     true_expression =
-             expression
+             function_or_expression
 
     else_expression =
-             expression
+             function_or_expression
 
     function_call =
-             namespace? (Name | name) <break> arguments <nl>?
+             function_name <break> arguments
+
+    function_name =
+             namespace? (Name | name)
 
     arguments =
-             argument (<break> argument)*
-
-    argument =
-             expression
+             expression (<break> expression)*
 
     value =
              namespace? (Name | name)
@@ -193,7 +207,7 @@
              value (<break> <','> <break> value)*
 
     tuple =
-             <'('> <break> expression <break> (<break> <','> <break> expression)* <break> <')'>
+             <'('> <break> function_or_expression (<break> <','> <break> function_or_expression)* <break> <')'>
 
     record =
              <'{'> <break> record_items? <break> <'}'>
@@ -208,18 +222,22 @@
              <'case'> <break> case_on <break> <'of'> <break> match (<break> match)*
 
     case_on =
-             expression
+             function_or_expression
 
     match =
-             destructure <break> (match_alias <break>)? <'->'> <break> expression <nl>?
+             match_assignment <break> (match_alias <break>)? <'->'> <break> match_expression  <nl>?
+
+    match_assignment =
+             destructure
+
+    match_expression =
+             function_or_expression
 
     match_alias =
              <'as'> <break> name
 
     destructure =
              type_destructure
-             |
-             function_destructure
              |
              tuple_destructure
              |
@@ -234,6 +252,8 @@
              value_destructure
              |
              record_destructure
+             |
+             <'('> <break> function_destructure <break>  <')'>
              |
              <'('> <break> destructure <break> <')'>
 
@@ -250,16 +270,19 @@
              destructure (<break> <','> <break> destructure)*
 
     function_destructure =
-             destructure (<break> <'->'> <break> destructure)+
+             function_destructure_argument (<break> <'->'> <break> function_destructure_argument)+
+
+    function_destructure_argument =
+             destructure
 
     type_destructure =
              namespace? Name (<break> type_destructure_argument)*
 
     type_destructure_argument =
-             variable_destructure / tuple_destructure / destructure
+             destructure
 
     variable_destructure =
-             name
+             namespace? name
 
     value_destructure =
              literal
@@ -298,13 +321,13 @@
              !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[A-Z][a-zA-Z0-9]*'
 
     name =
-             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[a-z][a-zA-Z0-9]*'
+             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of'|#'\\btype\\b') #'[a-z][a-zA-Z0-9]*'
 
     int =
-             #'-?[0-9]+'
+             !'->' #'-?[0-9]+'
 
     float =
-             #'-?[0-9]+\\.[0-9]*'
+             !'->' #'-?[0-9]+\\.[0-9]*'
 
     string =
              <'\"'>  #'[^\"]*'  <'\"'>
@@ -320,9 +343,11 @@
              <'_'>
 
     symbol =
-             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[+-/*.<>:&|^?%#~!]+'
+             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of'|'->') #'[+/*.<>:&|^?%#~!-]+'
              |
-             #'=[+-/*.<>:&|=^?%#~!]+' (* hacky way of reserving = but allowing custom operators still *)
+             !'->' #'=[+/*.<>:&|=^?%#~!-]+' (* hacky way of reserving = but allowing custom operators still *)
+             |
+             !'->' #'[+/*.<>:&|=^?%#~!-]+='
 
     comment =
              singleline_comment | multiline_comment
