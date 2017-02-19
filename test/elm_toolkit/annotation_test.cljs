@@ -65,7 +65,7 @@
         actual [:annotation
                 [:name "thing"]
                 [:signature
-                 [:destructure [:type_destructure [:Name "String"]]]]] ]
+                 [:destructure [:type_destructure [:Name "String"]]]]]]
     (is (= expected actual))
     (is (= parse-count 1) parse-count-message)))
 
