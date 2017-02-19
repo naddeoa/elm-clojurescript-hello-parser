@@ -13,7 +13,7 @@
              |
              doc
              |
-             imports
+             import
              |
              definition
 
@@ -38,9 +38,6 @@
              namespace? (Name | name)
 
 (* Rules for import statements *)
-
-    imports =
-             import (<break> import)*
 
     import =
              <'import'> <break> namespace? module_name (<break> import_as)? <break> exposing? <nl>?
