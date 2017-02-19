@@ -1,5 +1,6 @@
 (ns elm-toolkit.let-test
   (:require [elm-toolkit.parser :as parser]
+            [instaparse.core :as insta]
             [cljs.test :refer-macros  [deftest is testing run-tests]]))
 
 
@@ -9,13 +10,16 @@
                in
                    x"
         actual (parser/parser input :start :let)
+        parses (insta/parses parser/parser input :start :let)
+        parse-count (count parses)
         expected [:let
                   [:assignment
                    [:destructure [:variable_destructure [:name "x"]]]
                    [:expression [:value [:int "1"]]]]
                   [:in_expression
                    [:expression [:value [:name "x"]]]]]]
-    (is (= expected actual))))
+    (is (= expected actual))
+    (is (= parse-count 1))))
 
 (deftest test-let-tuple
   (let [input "let
@@ -23,6 +27,8 @@
                in
                    a"
         actual (parser/parser input :start :let)
+        parses (insta/parses parser/parser input :start :let)
+        parse-count (count parses)
         expected [:let
                   [:assignment
                    [:destructure
@@ -33,7 +39,8 @@
                     [:value [:name "someTuple"]]]]
                   [:in_expression
                    [:expression [:value [:name "a"]]]]]]
-    (is (= expected actual))))
+    (is (= expected actual))
+    (is (= parse-count 1))))
 
 
 (deftest test-let-type-destructure
@@ -42,15 +49,19 @@
                in
                    string"
         actual (parser/parser input :start :let)
+        parses (insta/parses parser/parser input :start :let)
+        parse-count (count parses)
         expected [:let
                   [:assignment
                    [:destructure
                     [:type_destructure
                      [:Name "Msg"]
                      [:type_destructure_argument
-                      [:variable_destructure [:name "string"]]]]]
+                      [:destructure
+                       [:variable_destructure [:name "string"]]]]]]
                    [:expression [:value [:name "msg"]]]]
                   [:in_expression [:expression [:value [:name "string"]]]]]]
-    (is (= expected actual))))
+    (is (= expected actual))
+    (is (= parse-count 1))))
 
 (cljs.test/run-tests)

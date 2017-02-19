@@ -222,10 +222,16 @@
              <'case'> <break> case_on <break> <'of'> <break> match (<break> match)*
 
     case_on =
-             expression
+             function_or_expression
 
     match =
-             destructure <break> (match_alias <break>)? <'->'> <break> expression <nl>?
+             match_assignment <break> (match_alias <break>)? <'->'> <break> match_expression  <nl>?
+
+    match_assignment =
+             destructure
+
+    match_expression =
+             function_or_expression
 
     match_alias =
              <'as'> <break> name
