@@ -343,11 +343,11 @@
              <'_'>
 
     symbol =
-             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of'|'->') #'[+/*.<>:&|^?%#~!-]+'
+             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of'|'->') #'[+/*<>:&|^?%#~!-]+'
              |
-             !'->' #'=[+/*.<>:&|=^?%#~!-]+' (* hacky way of reserving = but allowing custom operators still *)
+             !'->' #'=[+/*<>:&|=^?%#~!-]+' (* hacky way of reserving = but allowing custom operators still *)
              |
-             !'->' #'[+/*.<>:&|=^?%#~!-]+='
+             !'->' #'[+/*<>:&|=^?%#~!-]+='
 
     comment =
              singleline_comment | multiline_comment
