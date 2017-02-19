@@ -146,13 +146,13 @@
              <'if'> <break> test <break> <'then'> <break> true_expression <break> <'else'> <break> else_expression (<break> if)*
 
     test =
-             expression
+             function_or_expression
 
     true_expression =
-             expression
+             function_or_expression
 
     else_expression =
-             expression
+             function_or_expression
 
     function_call =
              function_name <break> arguments
