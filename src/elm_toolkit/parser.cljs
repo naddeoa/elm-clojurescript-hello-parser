@@ -105,7 +105,12 @@
 (* Rules for function definitions *)
 
     function =
-             name <break> function_parameters <break> <'='> <break> expression <nl>?
+             name <break> function_parameters <break> <'='> <break> function_body
+
+    function_body =
+             expression
+             |
+             function_call
 
     function_parameters =
              destructure (<break> destructure)*
@@ -115,8 +120,6 @@
 
     expression =
              if
-             |
-             function_call
              |
              value
              |
@@ -130,7 +133,9 @@
              |
              record_update
              |
-             <'('> expression <')'>
+             <'('> <break> function_call <break> <')'>
+             |
+             <'('> <break> expression <break> <')'>
 
     if =
              <'if'> <break> test <break> <'then'> <break> true_expression <break> <'else'> <break> else_expression (<break> if)*
@@ -145,13 +150,13 @@
              expression
 
     function_call =
-             namespace? (Name | name) <break> arguments <nl>?
+             function_name <break> arguments
+
+    function_name =
+             namespace? (Name | name)
 
     arguments =
-             argument (<break> argument)*
-
-    argument =
-             expression
+             expression (<break> expression)*
 
     value =
              namespace? (Name | name)
@@ -327,11 +332,11 @@
              <'_'>
 
     symbol =
-             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[+-/*.<>:&|^?%#~!]+'
+             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of'|'->') #'[+-/*.<>:&|^?%#~!]+'
              |
-             #'=[+-/*.<>:&|=^?%#~!]+' (* hacky way of reserving = but allowing custom operators still *)
+             !'->' #'=[+-/*.<>:&|=^?%#~!]+' (* hacky way of reserving = but allowing custom operators still *)
              |
-             #'[+-/*.<>:&|=^?%#~!]+='
+             !'->' #'[+-/*.<>:&|=^?%#~!]+='
 
     comment =
              singleline_comment | multiline_comment
