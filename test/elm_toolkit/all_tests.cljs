@@ -13,6 +13,7 @@
             [elm-toolkit.case_test]
             [elm-toolkit.string_test]
             [elm-toolkit.record_destructure_test]
+            [elm-toolkit.destructure_test]
             [elm-toolkit.record_test]
             [elm-toolkit.function_test]
             [elm-toolkit.record_update_test]
