@@ -137,6 +137,11 @@
              |
              <'('> <break> expression <break> <')'>
 
+    function_or_expression =
+             expression
+             |
+             function_call
+
     if =
              <'if'> <break> test <break> <'then'> <break> true_expression <break> <'else'> <break> else_expression (<break> if)*
 
@@ -202,7 +207,7 @@
              value (<break> <','> <break> value)*
 
     tuple =
-             <'('> <break> expression <break> (<break> <','> <break> expression)* <break> <')'>
+             <'('> <break> function_or_expression (<break> <','> <break> function_or_expression)* <break> <')'>
 
     record =
              <'{'> <break> record_items? <break> <'}'>
@@ -332,11 +337,11 @@
              <'_'>
 
     symbol =
-             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of'|'->') #'[+-/*.<>:&|^?%#~!]+'
+             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of'|'->') #'[+/*.<>:&|^?%#~!-]+'
              |
-             !'->' #'=[+-/*.<>:&|=^?%#~!]+' (* hacky way of reserving = but allowing custom operators still *)
+             !'->' #'=[+/*.<>:&|=^?%#~!-]+' (* hacky way of reserving = but allowing custom operators still *)
              |
-             !'->' #'[+-/*.<>:&|=^?%#~!]+='
+             !'->' #'[+/*.<>:&|=^?%#~!-]+='
 
     comment =
              singleline_comment | multiline_comment
