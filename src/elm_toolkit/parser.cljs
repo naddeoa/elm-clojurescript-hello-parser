@@ -315,7 +315,7 @@
              !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[A-Z][a-zA-Z0-9]*'
 
     name =
-             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[a-z][a-zA-Z0-9]*'
+             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of'|#'\\btype\\b') #'[a-z][a-zA-Z0-9]*'
 
     int =
              !'->' #'-?[0-9]+'
