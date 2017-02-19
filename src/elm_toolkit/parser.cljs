@@ -102,6 +102,8 @@
 
     signature =
              function_destructure
+             |
+             destructure
 
 (* Rules for function definitions *)
 
@@ -255,7 +257,7 @@
              destructure (<break> <','> <break> destructure)*
 
     function_destructure =
-             function_destructure_argument (<break> <'->'> <break> function_destructure_argument)*
+             function_destructure_argument (<break> <'->'> <break> function_destructure_argument)+
 
     function_destructure_argument =
              destructure
