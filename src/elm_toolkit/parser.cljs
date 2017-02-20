@@ -6,7 +6,7 @@
 
 (def grammar "
     start =
-             (<break>? block <break>?)+
+             (<ws>* block <ws>*)+
 
     block =
              module_def
@@ -20,7 +20,7 @@
 (* Rules for the initial module definition *)
 
     module_def =
-             <'module'> <break> namespace? module_name <break> exposing? <nl>?
+             <'module'> <break> namespace? module_name <break> exposing?
 
     exposing =
              <'exposing'> <break> <'('> <break> expose_list <break> <')'>
@@ -108,9 +108,7 @@
              name <break> function_parameters <break> <'='> <break> function_body
 
     function_body =
-             expression
-             |
-             function_call
+             function_or_expression
 
     function_parameters =
              destructure (<break> destructure)*
@@ -123,8 +121,6 @@
              |
              value
              |
-             infix
-             |
              let
              |
              case
@@ -132,6 +128,8 @@
              lambda
              |
              record_update
+             |
+             <'('> <break> infix <break> <')'>
              |
              <'('> <break> function_call <break> <')'>
              |
@@ -141,6 +139,8 @@
              expression
              |
              function_call
+             |
+             infix
 
     if =
              <'if'> <break> test <break> <'then'> <break> true_expression <break> <'else'> <break> else_expression (<break> if)*
@@ -185,7 +185,7 @@
              namespace? (Name|name)
 
     infix =
-             expression <break> symbol ( (<break> expression) | <break> infix )
+             expression (<break> symbol <break> expression)+
 
     let =
              <'let'> <break> assignment (<break> assignment)* <break> <'in'> <break> in_expression
@@ -207,7 +207,7 @@
              value (<break> <','> <break> value)*
 
     tuple =
-             <'('> <break> function_or_expression (<break> <','> <break> function_or_expression)* <break> <')'>
+             <'('> <break> function_or_expression (<break> <','> <break> function_or_expression)+ <break> <')'>
 
     record =
              <'{'> <break> record_items? <break> <'}'>
@@ -291,7 +291,11 @@
              <'('> <break> destructure (<break> <','> <break> destructure)+ <break> <')'>
 
     lambda =
-             <'('> <'\\\\'> <break> destructure <break> <'->'> <break> expression <break> <')'>
+             <'('> <'\\\\'> <break> destructure <break> <'->'> <break> lambda_body <break> <')'>
+
+    lambda_body =
+             function_or_expression
+
 
 (* Rules for comments *)
 

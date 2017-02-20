@@ -15,10 +15,10 @@
                     [:destructure [:variable_destructure [:name "arg1"]]]
                     [:destructure [:variable_destructure [:name "arg2"]]]]
                    [:function_body
-                    [:expression
+                    [:function_or_expression
                      [:infix
                       [:expression [:value [:name "arg1"]]]
-                      [:symbol "+"]
+                      [:symbol "+"] 
                       [:expression [:value [:name "arg2"]]]]]]]]]
     (is (= expected actual))
     (is (= parse-count 1))))
@@ -41,7 +41,9 @@
                        [:type_destructure_argument
                         [:destructure
                          [:variable_destructure [:name "f"]]]]]]]]
-                   [:function_body [:expression [:value [:name "f"]]]]]]]
+                   [:function_body
+                    [:function_or_expression
+                     [:expression [:value [:name "f"]]]]]]]]
     (is (= expected actual))
     (is (= parse-count 1))))
 

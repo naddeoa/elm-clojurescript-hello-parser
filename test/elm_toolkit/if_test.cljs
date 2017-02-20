@@ -3,7 +3,7 @@
             [instaparse.core :as insta]
             [cljs.test :refer-macros  [deftest is testing run-tests]]))
 
-(deftest test-module-if
+(deftest test-if
   (let [input "if True then
                    1
                else
@@ -24,7 +24,7 @@
     (is (= expected actual))
     (is (= parse-count 1))))
 
-(deftest test-module-if-expressions
+(deftest test-if-expressions
   (let [input "if b && c then
                    SomeFunction a b
                else
@@ -35,11 +35,10 @@
         actual  [:if
                  [:test
                   [:function_or_expression
-                   [:expression
-                    [:infix
-                     [:expression [:value [:name "b"]]]
-                     [:symbol "&&"]
-                     [:expression [:value [:name "c"]]]]]]]
+                   [:infix
+                    [:expression [:value [:name "b"]]]
+                    [:symbol "&&"]
+                    [:expression [:value [:name "c"]]]]]]
                  [:true_expression
                   [:function_or_expression
                    [:function_call
@@ -49,15 +48,14 @@
                      [:expression [:value [:name "b"]]]]]]]
                  [:else_expression
                   [:function_or_expression
-                   [:expression
-                    [:infix
-                     [:expression [:value [:name "a"]]]
-                     [:symbol "||"] 
-                     [:expression [:value [:name "b"]]]]]]]]]
+                   [:infix
+                    [:expression [:value [:name "a"]]]
+                    [:symbol "||"] 
+                    [:expression [:value [:name "b"]]]]]]]]
     (is (= expected actual))
     (is (= parse-count 1))))
 
-(deftest test-module-nested
+(deftest test-if-nested
   (let [input "if a > b then
                    1
                else if a == b then
@@ -70,11 +68,10 @@
         actual [:if
                 [:test
                  [:function_or_expression
-                  [:expression
-                   [:infix
-                    [:expression [:value [:name "a"]]]
-                    [:symbol ">"]
-                    [:expression [:value [:name "b"]]]]]]]
+                  [:infix
+                   [:expression [:value [:name "a"]]]
+                   [:symbol ">"]
+                   [:expression [:value [:name "b"]]]]]]
                 [:true_expression
                  [:function_or_expression
                   [:expression [:value [:int "1"]]]]]
@@ -84,11 +81,10 @@
                    [:if
                     [:test
                      [:function_or_expression
-                      [:expression
-                       [:infix
-                        [:expression [:value [:name "a"]]]
-                        [:symbol "=="]
-                        [:expression [:value [:name "b"]]]]]]]
+                      [:infix
+                       [:expression [:value [:name "a"]]]
+                       [:symbol "=="]
+                       [:expression [:value [:name "b"]]]]]]
                     [:true_expression
                      [:function_or_expression
                       [:expression [:value [:int "0"]]]]]

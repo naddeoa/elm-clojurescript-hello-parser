@@ -11,13 +11,14 @@
         expected [:lambda
                   [:destructure
                    [:tuple_destructure
-                    [:destructure
-                     [:variable_destructure [:name "a"]]]
-                    [:destructure
-                     [:variable_destructure [:name "b"]]]]]
-                  [:expression
-                   [:infix
-                    [:expression [:value [:name "a"]]] [:symbol "+"] [:expression [:value [:name "b"]]]]]]]
+                    [:destructure [:variable_destructure [:name "a"]]]
+                    [:destructure [:variable_destructure [:name "b"]]]]]
+                  [:lambda_body
+                   [:function_or_expression
+                    [:infix
+                     [:expression [:value [:name "a"]]]
+                     [:symbol "+"] 
+                     [:expression [:value [:name "b"]]]]]]]]
     (is (= expected actual))
     (is (= parse-count 1))))
 
@@ -28,7 +29,9 @@
         parse-count (count parses)
         expected  [:lambda
                    [:destructure [:ignore_arg]]
-                   [:expression [:value [:name "a"]]]] ]
+                   [:lambda_body
+                    [:function_or_expression
+                     [:expression [:value [:name "a"]]]]]]]
     (is (= expected actual))
     (is (= parse-count 1))))
 
