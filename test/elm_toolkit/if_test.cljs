@@ -36,9 +36,9 @@
                  [:test
                   [:function_or_expression
                    [:infix
-                    [:expression [:value [:name "b"]]]
+                    [:infix_argument [:expression [:value [:name "b"]]]]
                     [:symbol "&&"]
-                    [:expression [:value [:name "c"]]]]]]
+                    [:infix_argument [:expression [:value [:name "c"]]]]]]]
                  [:true_expression
                   [:function_or_expression
                    [:function_call
@@ -49,9 +49,9 @@
                  [:else_expression
                   [:function_or_expression
                    [:infix
-                    [:expression [:value [:name "a"]]]
-                    [:symbol "||"] 
-                    [:expression [:value [:name "b"]]]]]]]]
+                    [:infix_argument [:expression [:value [:name "a"]]]]
+                    [:symbol "||"]
+                    [:infix_argument [:expression [:value [:name "b"]]]]]]]]]
     (is (= expected actual))
     (is (= parse-count 1))))
 
@@ -66,31 +66,33 @@
         parses (insta/parses parser/parser input :start :if)
         parse-count (count parses)
         actual [:if
-                [:test
-                 [:function_or_expression
-                  [:infix
-                   [:expression [:value [:name "a"]]]
-                   [:symbol ">"]
-                   [:expression [:value [:name "b"]]]]]]
-                [:true_expression
-                 [:function_or_expression
-                  [:expression [:value [:int "1"]]]]]
-                [:else_expression
-                 [:function_or_expression
-                  [:expression
-                   [:if
-                    [:test
-                     [:function_or_expression
-                      [:infix
-                       [:expression [:value [:name "a"]]]
-                       [:symbol "=="]
-                       [:expression [:value [:name "b"]]]]]]
-                    [:true_expression
-                     [:function_or_expression
-                      [:expression [:value [:int "0"]]]]]
-                    [:else_expression
-                     [:function_or_expression
-                      [:expression [:value [:int "-1"]]]]]]]]]]]
+             [:test
+              [:function_or_expression
+               [:infix
+                [:infix_argument [:expression [:value [:name "a"]]]]
+                [:symbol ">"]
+                [:infix_argument [:expression [:value [:name "b"]]]]]]]
+             [:true_expression
+              [:function_or_expression
+               [:expression [:value [:int "1"]]]]]
+             [:else_expression
+              [:function_or_expression
+               [:expression
+                [:if
+                 [:test
+                  [:function_or_expression
+                   [:infix
+                    [:infix_argument
+                     [:expression [:value [:name "a"]]]]
+                    [:symbol "=="]
+                    [:infix_argument
+                     [:expression [:value [:name "b"]]]]]]]
+                 [:true_expression
+                  [:function_or_expression
+                   [:expression [:value [:int "0"]]]]]
+                 [:else_expression
+                  [:function_or_expression
+                   [:expression [:value [:int "-1"]]]]]]]]]]]
     (is (= expected actual))
     (is (= parse-count 1))))
 
