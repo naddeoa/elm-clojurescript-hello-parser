@@ -19,6 +19,7 @@
             [elm-toolkit.record_update_test]
             [elm-toolkit.type_alias_test]
             [elm-toolkit.infix_test]
+            [elm-toolkit.snippet_test]
             [elm-toolkit.annotation_test]))
 
 (cljs.test/run-all-tests)

@@ -185,7 +185,12 @@
              namespace? (Name|name)
 
     infix =
-             expression (<break> symbol <break> expression)+
+             infix_argument (<break> symbol <break> infix_argument)+
+
+    infix_argument =
+             expression
+             |
+             function_call
 
     let =
              <'let'> <break> assignment (<break> assignment)* <break> <'in'> <break> in_expression

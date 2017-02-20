@@ -17,9 +17,11 @@
                    [:function_body
                     [:function_or_expression
                      [:infix
-                      [:expression [:value [:name "arg1"]]]
-                      [:symbol "+"] 
-                      [:expression [:value [:name "arg2"]]]]]]]]]
+                      [:infix_argument
+                       [:expression [:value [:name "arg1"]]]]
+                      [:symbol "+"]
+                      [:infix_argument
+                       [:expression [:value [:name "arg2"]]]]]]]]]]
     (is (= expected actual))
     (is (= parse-count 1))))
 

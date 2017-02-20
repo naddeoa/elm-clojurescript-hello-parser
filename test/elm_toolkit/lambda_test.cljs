@@ -16,9 +16,9 @@
                   [:lambda_body
                    [:function_or_expression
                     [:infix
-                     [:expression [:value [:name "a"]]]
-                     [:symbol "+"] 
-                     [:expression [:value [:name "b"]]]]]]]]
+                     [:infix_argument [:expression [:value [:name "a"]]]]
+                     [:symbol "+"]
+                     [:infix_argument [:expression [:value [:name "b"]]]]]]]]]
     (is (= expected actual))
     (is (= parse-count 1))))
 
