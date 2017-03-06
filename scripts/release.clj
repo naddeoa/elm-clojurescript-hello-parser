@@ -4,9 +4,10 @@
 
 (let [start (System/nanoTime)]
   (b/build "src"
-    {:output-to "release/elm_toolkit.js"
+    {:output-to "release/index.js"
+     :main 'elm-toolkit.core
      :output-dir "release"
-     :optimizations :advanced
+     :optimizations :none
      :target :nodejs
      :verbose true})
   (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds"))

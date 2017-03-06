@@ -1,2 +1,5 @@
 #!/bin/sh
 rlwrap lein trampoline run -m clojure.main scripts/release.clj
+
+# cd ./release
+# zip ../elm_toolkit.zip `find ./*`

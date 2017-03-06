@@ -1,12 +1,10 @@
 (ns elm-toolkit.parser
-  (:require [instaparse.core :as insta]
-            [cljs.nodejs :as nodejs]))
+  (:require [instaparse.core :as insta]))
 
-(def fs (nodejs/require "fs"))
 
 (def grammar "
     start =
-             (<ws>* block <ws>*)+
+             (<ws> block <ws>)+
 
     block =
              module_def
@@ -305,14 +303,10 @@
 (* Rules for comments *)
 
     doc =
-             <'{-|'> <ws> doc_part* <ws> '-}'
+             <'{-|'> doc_line* <'-}'>
 
     doc_part =
-             doc_header
-             |
-             doc_list
-             |
-             text
+             doc_line
 
     doc_header =
              <'#'> #'.*'
@@ -320,18 +314,17 @@
     doc_list =
              <'@docs'> <break> (Name | name) <break> ( <break> <','> <break> (Name | name) )*
 
-    text =
-             !('@docs'|'#'|'-}') #'.*' <nl>?
+    doc_line =
+             !'-}' #'.+'
 
 
 (* Building blocks *)
 
+
     Name =
-             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of') #'[A-Z][a-zA-Z0-9]*'
-
+             #'[A-Z][a-zA-Z0-9]*'
     name =
-             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of'|#'\\btype\\b') #'[a-z][a-zA-Z0-9]*'
-
+             #'(?!\\b(if|then|else|in|let|case|of|type)\\b)[a-z][a-zA-Z0-9]*'
     int =
              !'->' #'-?[0-9]+'
 
@@ -351,12 +344,7 @@
     ignore_arg =
              <'_'>
 
-    symbol =
-             !(#'\\bif\\b'|#'\\bthen\\b'|#'\\belse\\b'|#'\\bin\\b'|#'\\blet\\b'|'case'|'of'|'->') #'[+/*<>:&|^?%#~!-]+'
-             |
-             !'->' #'=[+/*<>:&|=^?%#~!-]+' (* hacky way of reserving = but allowing custom operators still *)
-             |
-             !'->' #'[+/*<>:&|=^?%#~!-]+='
+    symbol = #'(?!(->|=)\\b)[+/*<>:&|=^?%#~!-]+'
 
     comment =
              singleline_comment | multiline_comment
@@ -379,15 +367,3 @@
   ")
 
 (def parser (insta/parser grammar))
-
-(defn parses [input]
-  (insta/parses parser input))
-
-(defn debug [path]
-  (let [content (.readFileSync fs path "UTF-8" )]
-    (insta/parses parser content)))
-
-(defn parse-file [path]
-  (let [content (.readFileSync fs path "UTF-8" )]
-    (parser content )))
-

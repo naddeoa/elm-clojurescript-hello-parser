@@ -1,13 +1,17 @@
 (defproject elm-toolkit "0.1.0-SNAPSHOT"
   :description "FIXME: write this!"
   :url "http://example.com/FIXME"
+  :aot :all
+  :java-source-paths ["src"]
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.293"]
                  [org.clojure/core.match "0.3.0-alpha4"]
                  [com.rpl/specter "0.13.2"]
                  [instaparse "1.4.5"]
                  [pjstadig/humane-test-output "0.8.1"]
-                 [figwheel-sidecar "0.5.0-SNAPSHOT" :scope "test"]
+                 [org.clojure/core.async "0.3.441"]
+                 [com.amazonaws/aws-lambda-java-core "1.0.0"]
+                 [org.clojure/data.json "0.2.6"]
 
                  ; For repl use
                  [com.cemerick/piggieback "0.2.1"]
