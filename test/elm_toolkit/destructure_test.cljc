@@ -1,7 +1,8 @@
 (ns elm-toolkit.destructure-test
   (:require [elm-toolkit.parser :as parser]
             [instaparse.core :as insta]
-            [cljs.test :refer-macros  [deftest is testing run-tests]]))
+            #?(:clj [clojure.test :refer [deftest is testing run-tests]]
+               :cljs [clojure.test :refer-macros [deftest is testing run-tests]])))
 
 (deftest test-destructure-type
   (let [input "Type a b c"
@@ -191,4 +192,5 @@
     (is (= expected actual))
     (is (= parse-count 1))))
 
-(cljs.test/run-tests)
+#?(:clj (clojure.test/run-tests)
+   :cljs (cljs.test/run-tests))

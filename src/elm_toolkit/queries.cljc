@@ -1,10 +1,9 @@
 (ns elm-toolkit.queries
   (:require [com.rpl.specter :as specter]
-            [cljs.core.match :refer-macros [match]]
+            #?(:clj [clojure.core.match :refer [match]]
+               :cljs [cljs.core.match :refer-macros [match]])
             [instaparse.core :as insta]
-            [elm-toolkit.render :as render]
-            ))
-
+            [elm-toolkit.render :as render]))
 
 ;;
 ;; Selects

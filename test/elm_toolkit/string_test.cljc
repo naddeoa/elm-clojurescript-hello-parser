@@ -1,7 +1,8 @@
 (ns elm-toolkit.string-test
   (:require [elm-toolkit.parser :as parser]
             [instaparse.core :as insta]
-            [cljs.test :refer-macros  [deftest is testing run-tests]]))
+            #?(:clj [clojure.test :refer [deftest is testing run-tests]]
+               :cljs [clojure.test :refer-macros [deftest is testing run-tests]])))
 
 (deftest test-string
   (let [input "\"fish\""
@@ -23,4 +24,5 @@
 
 ;; TODO add test for escaped quotes in a string
 
-(cljs.test/run-tests)
+#?(:clj (clojure.test/run-tests)
+   :cljs (cljs.test/run-tests))

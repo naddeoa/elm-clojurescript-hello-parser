@@ -1,7 +1,8 @@
 (ns elm-toolkit.render-test
   (:require [elm-toolkit.render :as r]
             [elm-toolkit.parser :as parser]
-            [cljs.test :refer-macros  [deftest is testing run-tests]]))
+            #?(:clj [clojure.test :refer [deftest is testing run-tests]]
+               :cljs [clojure.test :refer-macros [deftest is testing run-tests]])))
 
 ;;
 ;; Tests for import rendering
@@ -66,4 +67,5 @@
         render (r/render-namespace parse-tree)]
     (is (= input render))))
 
-(cljs.test/run-tests)
+#?(:clj (clojure.test/run-tests)
+   :cljs (cljs.test/run-tests))

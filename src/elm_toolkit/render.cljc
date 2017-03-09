@@ -1,5 +1,6 @@
 (ns elm-toolkit.render
-  (:require [cljs.core.match :refer-macros [match]]
+  (:require #?(:clj [clojure.core.match :refer [match]]
+               :cljs [cljs.core.match :refer-macros [match]])
             [clojure.string :as string]
             [instaparse.core :as insta]))
 
@@ -19,7 +20,6 @@
 (def module-transform (merge expose-transform
                              name-transform
                              namespace-transform
-                             module-transform
                              {:module_def (fn [& module] (str "module " (string/join module)))}))
 
 (def import-transform (merge name-transform

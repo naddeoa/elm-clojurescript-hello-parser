@@ -1,8 +1,96 @@
 (ns elm-toolkit.snippet-test
   (:require  [elm-toolkit.parser :as parser]
              [instaparse.core :as insta]
-             [cljs.test :refer-macros  [deftest is testing run-tests]]))
+             #?(:clj [clojure.test :refer [deftest is testing run-tests]]
+                :cljs [clojure.test :refer-macros [deftest is testing run-tests]])))
 
+
+(def input "nextSource : Source a -> Source a
+nextSource (Source a next) =
+    Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+    Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+    Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+    Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+    Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+    Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+  Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+  Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+  Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+  Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+  Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+  Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+  Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+  Source (next a) next
+
+nextSource : Source a -> Source a
+nextSource (Source a next) =
+  Source (next a) next
+
+
+func : Int -> String -> List (a, b)
+
+func : Int -> String -> List (a, b)
+
+func : Int -> String -> List (a, b)
+
+func : Int -> String -> List (a, b)
+
+func : Int -> String -> List (a, b)
+
+func : Int -> String -> List (a, b)
+
+func : Int -> String -> List (a, b)
+
+func : Int -> String -> List (a, b)
+
+func : Int -> String -> List (a, b)
+
+func : Int -> String -> List (a, b)
+
+func : Int -> String -> List (a, b)
+
+func : Int -> String -> List (a, b)
+")
+(time (def a (parser/parser input)))
 
 (deftest test-definition-parse
   (let [input "factorsOf n =
@@ -72,5 +160,5 @@
     (is (= expected actual))
     (is (= parse-count 1))))
 
-(cljs.test/run-tests)
-
+#?(:clj (clojure.test/run-tests)
+   :cljs (cljs.test/run-tests))

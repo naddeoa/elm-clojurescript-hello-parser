@@ -1,6 +1,7 @@
 (ns elm-toolkit.definition-test
   (:require [elm-toolkit.parser :as parser]
-            [cljs.test :refer-macros  [deftest is testing run-tests]]))
+            #?(:clj [clojure.test :refer [deftest is testing run-tests]]
+               :cljs [clojure.test :refer-macros [deftest is testing run-tests]])))
 
 (deftest test-definition-value
   (let [input "x = 1"
@@ -11,4 +12,5 @@
                    [:expression [:value [:int "1"]]]]]]
     (is (= expected actual))))
 
-(cljs.test/run-tests)
+#?(:clj (clojure.test/run-tests)
+   :cljs (cljs.test/run-tests))
